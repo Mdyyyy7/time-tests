@@ -1,4 +1,23 @@
 import datetime
+import requests
+from unittest.mock import Mock
+
+def iss_passes():
+    response = requests.get(
+        "https://api.n2yo.com/rest/v1/satellite/visualpasses/25544/56/0/0/5/50",
+        params={'apiKey': "3Q884-HFUV8K-SCS3LG-55CU"}
+    )
+
+    data=response.jsom()
+    start_time=datetime.datetime.fromtimestamp(data["startUTC"])
+    end_time=datetime.datetime.fromtimestamp(data["endUTC"])
+    sec_range=[].append(start_time,end_time)
+    return sec_range
+
+#mock
+iss_passes=Mock(return_value=100)
+print(iss_passes.mock_calls)
+
 
 
 def time_range(start_time, end_time, number_of_intervals=1, gap_between_intervals_s=0):
@@ -26,6 +45,5 @@ def compute_overlap_time(range1, range2):
 if __name__ == "__main__":
     large = time_range("2010-01-12 10:00:00", "2010-01-12 12:00:00")
     short = time_range("2010-01-12 10:30:00", "2010-01-12 10:45:00", 2, 60)
-    print(compute_overlap_time(large, short))
-
+    #print(compute_overlap_time(large, short))
 
